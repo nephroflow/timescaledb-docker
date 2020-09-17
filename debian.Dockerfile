@@ -1,5 +1,5 @@
 ARG PG_VERSION
-ARG PREV_TS_VERSION=1.6.1
+ARG PREV_TS_VERSION=1.7.3
 ARG PREV_EXTRA
 ############################
 # Build tools binaries in separate image
@@ -30,7 +30,7 @@ RUN apt-get update && apt-get install -y git \
 # Grab old versions from previous version
 ############################
 ARG PG_VERSION
-FROM timescale/timescaledb:${PREV_TS_VERSION}-pg${PG_VERSION}${PREV_EXTRA} AS oldversions
+FROM timescale/timescaledb:${PREV_TS_VERSION}-pg${PG_VERSION} AS oldversions
 # Remove update files, mock files, and all but the last 5 .so/.sql files
 RUN rm -f $(pg_config --sharedir)/extension/timescaledb--*--*.sql \
     && rm -f $(pg_config --sharedir)/extension/timescaledb*mock*.sql \
@@ -48,7 +48,7 @@ ARG OSS_ONLY
 MAINTAINER Timescale https://www.timescale.com
 
 # Update list above to include previous versions when changing this
-ENV TIMESCALEDB_VERSION 1.7.0
+ENV TIMESCALEDB_VERSION 1.7.4
 
 COPY docker-entrypoint-initdb.d/* /docker-entrypoint-initdb.d/
 COPY --from=tools /go/bin/* /usr/local/bin/
